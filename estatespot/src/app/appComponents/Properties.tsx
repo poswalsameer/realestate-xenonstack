@@ -6,10 +6,41 @@ import { LogOut, Home, Bed, Bath } from "lucide-react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { baseURL, fetchData } from "../utils/Api";
+
+
+interface propTypes{
+
+    title: string,
+    location: string,
+    image: string,
+    type: string,
+    bedroom: string,
+    bathroom: string,
+    price: string
+
+}
+
+interface propertyTypes{
+    id: string;
+  agency: {
+    name: string;
+    tier: string;
+  };
+  location: {
+    name: string;
+  }[];
+  coverPhoto: {
+    url: string;
+  };
+  category: {
+    name: string;
+  }[];
+  baths: string;
+  price: string;
+}
 
 // PropertyCard component
-const PropertyCard = ( props: any ) => (
+const PropertyCard = ( props: propTypes ) => (
   <Card className="w-full bg-gray-800 text-gray-100">
 
     <CardHeader>
@@ -75,9 +106,9 @@ export default function RealEstatePage() {
       }, []);
 
     const router = useRouter();
-    const { data: session, status } = useSession();
+    const { status } = useSession();
 
-    const [saleProperty, setSaleProperty] = useState<any>([]);
+    const [saleProperty, setSaleProperty] = useState<propertyTypes[]>([]);
 
     if (status === "loading") {
         return <div>Loading...</div>;
@@ -92,52 +123,6 @@ export default function RealEstatePage() {
         signOut({ callbackUrl: '/' });
       };
 
-    const properties = [
-        {
-        id: 1,
-        title: "Modern Downtown Apartment",
-        location: "123 Main St, Cityville",
-        type: "Apartment",
-        bedrooms: 2,
-        bathrooms: 2,
-        price: 350000,
-        image: "/placeholder.svg?height=200&width=300"
-        },
-        {
-        id: 2,
-        title: "Spacious Suburban House",
-        location: "456 Oak Rd, Suburbia",
-        type: "House",
-        bedrooms: 4,
-        bathrooms: 3,
-        price: 550000,
-        image: "/placeholder.svg?height=200&width=300"
-        },
-        {
-        id: 3,
-        title: "Cozy Studio in Arts District",
-        location: "789 Creative Ave, Artstown",
-        type: "Studio",
-        bedrooms: 1,
-        bathrooms: 1,
-        price: 200000,
-        image: "/placeholder.svg?height=200&width=300"
-        },
-        {
-        id: 4,
-        title: "Luxury Penthouse with City View",
-        location: "101 Skyline Blvd, Metropolis",
-        type: "Penthouse",
-        bedrooms: 3,
-        bathrooms: 3,
-        price: 1200000,
-        image: "/placeholder.svg?height=200&width=300"
-        },
-        // Add more properties as needed
-    ]
-
-    // console.log("the properties for sale are: ", saleProperty);
-
   return (
     <div className="min-h-screen bg-gray-900 text-gray-100">
 
@@ -150,20 +135,13 @@ export default function RealEstatePage() {
             <LogOut className="mr-2 h-4 w-4" /> Logout
             </Button>
         </nav>  
-{/* 
-    props.title
-    props.location
-    props.image
-    props.type
-    props.bedroom
-    props.bathroom
-    props.price */}
 
       <main className="container mx-auto py-8 px-4">
         <div className="grid grid-cols-2 gap-6">
-          {saleProperty.map( ( property: any ) => (
+            
+          {saleProperty.map( ( property ) => (
             <PropertyCard 
-                    key={property.id} 
+                    key={property.id } 
                     title={property.agency.name}
                     location={property.location[0].name}
                     image={property.coverPhoto.url}
