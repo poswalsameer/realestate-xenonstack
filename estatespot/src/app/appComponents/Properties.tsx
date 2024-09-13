@@ -9,36 +9,36 @@ import { useEffect, useState } from "react";
 import { baseURL, fetchData } from "../utils/Api";
 
 // PropertyCard component
-const PropertyCard = ({ property} : {property: any}) => (
+const PropertyCard = ( props: any ) => (
   <Card className="w-full bg-gray-800 text-gray-100">
 
     <CardHeader>
-      <CardTitle>{property.title}</CardTitle>
-      <CardDescription className="text-gray-400">{property.location}</CardDescription>
+      <CardTitle>{props.title}</CardTitle>
+      <CardDescription className="text-gray-400">{props.location}</CardDescription>
     </CardHeader>
 
     <CardContent>
-      <img src={property.image} alt={property.title} className="w-full h-48 object-cover rounded-md mb-4" />
+      <img src={props.image} alt={props.title} className="w-full h-48 object-cover rounded-md mb-4" />
       <div className="flex justify-between items-center text-sm">
         <div className="flex items-center">
           <Home className="mr-2 h-4 w-4" />
-          <span>{property.type}</span>
+          <span>{props.type}</span>
         </div>
         <div className="flex items-center">
           <Bed className="mr-2 h-4 w-4" />
-          <span>{property.bedrooms} beds</span>
+          <span>{props.bedroom} beds</span>
         </div>
         <div className="flex items-center">
           <Bath className="mr-2 h-4 w-4" />
-          <span>{property.bathrooms} baths</span>
+          <span>{props.bathroom} baths</span>
         </div>
       </div>
     </CardContent>
 
     <CardFooter>
-      <p className="text-2xl font-bold text-green-400">${property.price.toLocaleString()}</p>
+      <p className="text-2xl font-bold text-green-400">${props.price.toLocaleString()}</p>
     </CardFooter>
-    
+
   </Card>
 )
 
@@ -150,11 +150,28 @@ export default function RealEstatePage() {
             <LogOut className="mr-2 h-4 w-4" /> Logout
             </Button>
         </nav>  
-      
+{/* 
+    props.title
+    props.location
+    props.image
+    props.type
+    props.bedroom
+    props.bathroom
+    props.price */}
+
       <main className="container mx-auto py-8 px-4">
         <div className="grid grid-cols-2 gap-6">
-          {properties.map(property => (
-            <PropertyCard key={property.id} property={property} />
+          {saleProperty.map( ( property: any ) => (
+            <PropertyCard 
+                    key={property.id} 
+                    title={property.agency.name}
+                    location={property.location[0].name}
+                    image={property.coverPhoto.url}
+                    type={property.category[1].name}
+                    bedroom={property.agency.tier}
+                    bathroom={property.baths}
+                    price={property.price}
+                    />
           ))}
         </div>
       </main>
